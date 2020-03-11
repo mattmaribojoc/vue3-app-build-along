@@ -26,13 +26,14 @@
 import moment from 'moment'
 import DayDisplay from '../components/DayDisplay.vue'
 
+
 export default {
   components: {
     DayDisplay,
   },
   setup () {
     return {
-
+      
     }
   }
 }
