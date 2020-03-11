@@ -40,50 +40,50 @@ export default {
 
 <style>
   #planner-header {
-    width: 100%;
     background-color: #fff;
+    width: 100%;
   }
 
   #planner-title {
-    height: 60px;
-    padding-left: 30px;
     background-color: #74b9ff;
     color: white;
+    height: 60px;
+    padding-left: 30px;
   }
 
   #planner-title h2 {
-    line-height: 60px;
-    margin-right: 10px;
+    display: inline-block;
     font-size: 2em;
     font-weight: bold;
-    display: inline-block;
+    line-height: 60px;
+    margin-right: 10px;
   }
 
   #planner-title span {
-    padding: 10px 10px 10px 0;
     display: inline-block;
     font-size: 2em;
+    padding: 10px 10px 10px 0;
   }
   
   #planner-days {
+    border-bottom: 2px solid #eee;
     height: 60px;
     width: 100%;
-    border-bottom: 2px solid #eee;
   }
 
 
   #planner-nav, .planner-header__day {
+    color: #333;
     float: left;
     height: 60px;
     position: relative;
     width: 12.5%;
-    color: #333;
   }
 
 
   .planner-header__day div, #planner-nav div {
-    position: absolute;
     bottom: 15px;
+    position: absolute;
   }
 
   .planner-header__day {
@@ -95,8 +95,8 @@ export default {
   }
 
   #planner-nav div{
-    left: 30px;
     bottom: 20px;
+    left: 30px;
   }
 
   #planner-nav div button {
@@ -109,12 +109,12 @@ export default {
   }
   .planner-header__day h2 {
     font-size: 1.5em;
-    margin: 0 3px;
-    width: 30px;
-    line-height: 30px;
-    height: 30px;
     font-weight: bold;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 3px;
     text-align: center;
+    width: 30px;
   }
 
   .planner-header__day-today {
@@ -123,30 +123,30 @@ export default {
 
   .planner-header__day-today h2 {
     background-color: #74b9ff;
-    color: white;
     border-radius: 5px;
+    color: white;
   }
 
   #planner-schedule {
-    width: 100%;
     height: calc(100vh - 120px);
     overflow: scroll;
+    width: 100%;
   }
 
   #schedule__sidebar {
-    float: left;
-    border-right: 2px solid #eee;
-    width: 12.5%;
     background-color: #fff;
+    border-right: 2px solid #eee;
+    float: left;
+    width: 12.5%;
   }
   
   .schedule__hour {
-    height: 50px;
-    text-align: left;
-    font-size: 0.75em;
-    color: #ccc;
-    padding-top: 43px;
     border-bottom: 1px solid #eee;
+    color: #ccc;
+    font-size: 0.75em;
+    height: 50px;
+    padding-top: 43px;
+    text-align: left;
   }
 
   #schedule-view {
@@ -159,16 +159,16 @@ export default {
   }
 
   .add-event, .edit-calendars {
-    float: right;
-    height: 20px;
     background-color: #55efc4;
+    box-sizing: content-box;
     color: white;
+    cursor: pointer;
+    float: right;
+    font-weight: bold;
+    height: 20px;
+    line-height: 20px;
     margin: 15px 30px 0 0;
     padding: 5px 10px;
-    font-weight: bold;
-    box-sizing: content-box;
-    line-height: 20px;
-    cursor: pointer;
   }
 
   .fade-enter-active {
@@ -181,6 +181,6 @@ export default {
 
   @keyframes fade {
     0% { opacity: 0%; }
-    100% {opacity: 100% }
+    100% { opacity: 100% }
   }
 </style>

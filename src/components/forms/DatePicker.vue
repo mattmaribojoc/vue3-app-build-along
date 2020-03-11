@@ -4,6 +4,8 @@
   </div>
 </template>
 <script>
+import moment from 'moment'
+
 export default {
   setup () {
     return {
@@ -14,17 +16,17 @@ export default {
 </script>
 <style scoped>
   select {
-    margin-right: 5px;
     font-family: inherit; 
     font-size: 0.8em;
+    margin-right: 5px;
   }
 
   .date-time__today {
+    cursor: pointer;
     float: right;
     font-size: 0.8em;
-    cursor: pointer;
-    text-decoration: underline;
     line-height: 18px;
+    text-decoration: underline;
   }
 
 </style>

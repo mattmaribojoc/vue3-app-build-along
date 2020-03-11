@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import moment from 'moment'
+
 export default {
   setup () {
 
@@ -14,14 +16,14 @@ export default {
 
 <style scoped>
   .day {
-    float: left;
-    width: calc(87.5%/7);
-    position: relative;
     border-right: 2px solid #eee;
+    float: left;
+    position: relative;
+    width: calc(87.5%/7);
   }
 
   .hour {
-    height: 50px;
     border-bottom: 1px dashed #eee;
+    height: 50px;
   }
 </style>

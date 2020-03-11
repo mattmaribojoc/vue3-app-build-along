@@ -32,17 +32,17 @@ export default {
   
   .calendar-swatch {
     float: left;
-    width: 25px;
     height: 25px;
     margin-right: 10px;
+    width: 25px;
   }
 
   input[type='text'] {
+    border-bottom: 1px solid #ccc;
+    border: none;
+    font-size: 0.8em;
     height: 25px;
     outline: none;
-    border: none;
-    border-bottom: 1px solid #ccc;
-    font-size: 0.8em;
     width: calc(100% - 35px);
   }
 </style>
