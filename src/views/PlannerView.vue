@@ -23,10 +23,15 @@
   </div>
   <div id='planner-schedule'>
     <div id='schedule__sidebar'>
-
+      <div class='schedule__hour' v-for='i in 23' :key='i'>
+        <span> {{ moment(i, 'HH').format('h A') }} </span>
+      </div>
     </div>
     <div id='schedule__view'>
-
+      <day-display 
+        v-for='i in 7' 
+        :key='i' 
+        :date="state.startOfWeek.clone().add(i - 1, 'days')" />
     </div>
   </div>
 </template>
@@ -77,6 +82,7 @@ export default {
     return {
       changeWeek,
       currentDate,
+      moment,
       state
     }
     

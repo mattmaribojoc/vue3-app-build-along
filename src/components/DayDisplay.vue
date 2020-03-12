@@ -1,6 +1,7 @@
 <template>
   <div class='day'>
-        
+    {{ date }}
+    <div class='hour' v-for='i in 24' :key='i' />
   </div>
 </template>
 
@@ -8,6 +9,9 @@
 import moment from 'moment'
 
 export default {
+  props: {
+    date: Object
+  },
   setup () {
 
   }
