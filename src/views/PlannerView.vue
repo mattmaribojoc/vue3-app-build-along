@@ -1,14 +1,23 @@
 <template>
   <div id='planner-header'>
     <div id='planner-title'>
-      
+      <h2> {{ state.startOfWeek.format('MMMM') }} </h2>
+      <span> {{ state.startOfWeek.format('YYYY') }} </span>
     </div>
     <div id='planner-days'>
       <div id='planner-nav'>
-        
+        <div> 
+          <button @click='changeWeek(-1)'> &lt; </button>
+          <button @click='changeWeek(0)'> Today </button>
+          <button @click='changeWeek(1)'> &gt; </button>
+        </div>
       </div>
       <div v-for='i in 7' :key='i' class='planner-header__day' >
-        
+        <div
+        :class="{'planner-header__day-today': state.startOfWeek.clone().add(i - 1, 'days').isSame(currentDate, 'day')}">
+          <h2> {{ state.startOfWeek.clone().add(i - 1, 'days').format('D') }} </h2>
+          <h3> {{ state.startOfWeek.clone().add(i - 1, 'days').format('ddd') }} </h3>
+        </div>
       </div>
     </div>
   </div>
@@ -23,18 +32,54 @@
 </template>
 
 <script>
+import { ref, reactive, onUnmounted } from 'vue'
 import moment from 'moment'
 import DayDisplay from '../components/DayDisplay.vue'
 
+const useCurrentDate = () => {
+  const currentDate = ref(moment())
 
+  const updateDate = () => {
+    currentDate.value = moment()
+  } 
+
+  const updateDateInterval = setInterval(updateDate, 1000)
+
+  onUnmounted(() => {
+    clearInterval(updateDateInterval)
+  })
+
+
+  return {
+    currentDate
+  }
+}
 export default {
   components: {
     DayDisplay,
   },
   setup () {
-    return {
-      
+    const { currentDate } = useCurrentDate() 
+
+    const state = reactive({
+      startOfWeek: moment().day('Sunday')
+    })
+
+    const changeWeek = (dir) => {
+      // dir: -1, 0, 1 (-1 = prev. 0 = current. 1 = next)
+      if (dir === 0) {
+        state.startOfWeek = moment().day('Sunday')
+      } else {
+        state.startOfWeek  = state.startOfWeek.clone().add(7 * dir, 'days')
+      }
     }
+    
+    return {
+      changeWeek,
+      currentDate,
+      state
+    }
+    
   }
 }
 </script>
