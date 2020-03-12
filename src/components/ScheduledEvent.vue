@@ -6,6 +6,7 @@
 <script>
 import moment from 'moment'
 export default {
+	props:
 	setup () {
     return {
 
@@ -73,3 +74,4 @@ h3 {
 	font-size: 0.75em;
 	margin-top: 5px;
 }
+</style>
