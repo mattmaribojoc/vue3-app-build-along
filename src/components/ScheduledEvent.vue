@@ -2,14 +2,18 @@
   <div 
 		class='event'
 		:style='state.eventStyle'
+		draggable
+		@dragstart='startDrag'
 	>
-		{{ scheduledEvent.name }}
+		<h2> {{ scheduledEvent.name }} </h2>
+		<h3> {{ scheduledEvent.startTime.format('h:mma') }}-{{ scheduledEvent.endTime.format('h:mma') }} </h3>
   </div>
 </template>
 
 <script>
 import { reactive, computed } from 'vue'
 import moment from 'moment'
+import { store } from '../store'
 
 const convertTimeToPixels = (t) => {
 	return (t.hour() + t.minute() / 60) * 50
@@ -21,7 +25,10 @@ export default {
 	},
 	setup (props) {
 		const state = reactive({
-			bgColor: computed(() => '#55efc4'),
+			bgColor: computed(() => {
+				let calendars = store.getState().calendars
+				return calendars.find(c => c.id === props.scheduledEvent.calendar).color
+			}),
 			duration: computed(() => {
 				const startTime = props.scheduledEvent.startTime
 				const endTime = props.scheduledEvent.endTime
@@ -36,7 +43,19 @@ export default {
 			})
 		})
 
+		const startDrag = (evt) => {
+			evt.dataTransfer.effectAllowed = 'move'
+			evt.dataTransfer.dropEffect = 'move'
+			evt.dataTransfer.setData('event', JSON.stringify(props.scheduledEvent))
+
+			let schedule = document.getElementById('planner-schedule')
+			let offset = evt.pageY - evt.target.offsetTop + schedule.scrollTop
+
+			evt.dataTransfer.setData('offset', offset)
+		}
+
     return {
+			startDrag,
 			state
     }
 	}
