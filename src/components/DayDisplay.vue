@@ -10,9 +10,10 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import moment from 'moment'
 import ScheduledEvent from './ScheduledEvent.vue'
+import { store } from '../store/'
 export default {
   props: {
     date: Object
@@ -22,15 +23,10 @@ export default {
   },
   setup (props) {
     const state = reactive({
-      daysEvents: [
-        {
-          id: '00',
-          name: 'Design Lecture',
-          startTime: moment(props.date).hour(5).minute(30),
-          endTime: moment(props.date).hour(7).minute(30),
-          calendar: '01'
-        }
-      ]
+      daysEvents: computed(() => {
+        let state = store.getState()
+        return state.scheduledEvents.filter(e => e.startTime.isSame(props.date, 'day'))
+      })
     })
 
     return {
