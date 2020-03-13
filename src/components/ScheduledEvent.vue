@@ -14,6 +14,7 @@
 import { reactive, computed } from 'vue'
 import moment from 'moment'
 import { store } from '../store'
+import { useDragAndDrop } from '../logic/drag-and-drop.js'
 
 const convertTimeToPixels = (t) => {
 	return (t.hour() + t.minute() / 60) * 50
@@ -24,6 +25,9 @@ export default {
 		scheduledEvent: Object
 	},
 	setup (props) {
+
+		const { startDrag } = useDragAndDrop(props)
+		
 		const state = reactive({
 			bgColor: computed(() => {
 				let calendars = store.getState().calendars
@@ -43,16 +47,7 @@ export default {
 			})
 		})
 
-		const startDrag = (evt) => {
-			evt.dataTransfer.effectAllowed = 'move'
-			evt.dataTransfer.dropEffect = 'move'
-			evt.dataTransfer.setData('event', JSON.stringify(props.scheduledEvent))
-
-			let schedule = document.getElementById('planner-schedule')
-			let offset = evt.pageY - evt.target.offsetTop + schedule.scrollTop
-
-			evt.dataTransfer.setData('offset', offset)
-		}
+		
 
     return {
 			startDrag,

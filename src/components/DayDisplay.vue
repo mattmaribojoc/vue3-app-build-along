@@ -24,6 +24,8 @@ import { reactive, computed } from 'vue'
 import moment from 'moment'
 import ScheduledEvent from './ScheduledEvent.vue'
 import { store } from '../store/'
+import { useDragAndDrop } from '../logic/drag-and-drop.js'
+
 export default {
   props: {
     date: Object
@@ -32,37 +34,15 @@ export default {
     ScheduledEvent
   },
   setup (props) {
+
+    const { dropEvent } = useDragAndDrop(props)
+
     const state = reactive({
       daysEvents: computed(() => {
         let state = store.getState()
         return state.scheduledEvents.filter(e => e.startTime.isSame(props.date, 'day'))
       })
     })
-
-    const dropEvent = (evt) => {
-      let e = JSON.parse(evt.dataTransfer.getData('event'))
-      let offset = parseInt(evt.dataTransfer.getData('offset'))
-      let schedule = document.getElementById('planner-schedule')
-
-      let mouseY = evt.clientY + schedule.scrollTop - offset
-      
-      let hour = Math.floor(mouseY / 50)
-      let minutes = Math.round((mouseY - hour * 50) / 50 * 60)
-      minutes = Math.round(minutes / 15) * 15
-
-      let startTime = props.date.clone().hour(hour).minute(minutes)
-      let duration = moment(e.endTime).diff(e.startTime)
-      let endTime = startTime.clone().add(duration, 'ms')
-
-      if (startTime.isSame(props.date, 'day') && endTime.clone().subtract(1, 'minute').isSame(props.date, 'day')) {
-        store.editEvent({
-          ...e,
-          startTime,
-          endTime
-        })
-      }
-      
-    }
 
     return {
       dropEvent,
