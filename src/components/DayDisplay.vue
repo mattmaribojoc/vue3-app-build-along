@@ -1,19 +1,41 @@
 <template>
   <div class='day'>
-    {{ date }}
+    <scheduled-event 
+      v-for='e in state.daysEvents'
+      :key='e.id'
+      :scheduled-event='e'
+    />
     <div class='hour' v-for='i in 24' :key='i' />
   </div>
 </template>
 
 <script>
+import { reactive } from 'vue'
 import moment from 'moment'
-
+import ScheduledEvent from './ScheduledEvent.vue'
 export default {
   props: {
     date: Object
   },
-  setup () {
+  components: {
+    ScheduledEvent
+  },
+  setup (props) {
+    const state = reactive({
+      daysEvents: [
+        {
+          id: '00',
+          name: 'Design Lecture',
+          startTime: moment(props.date).hour(5).minute(30),
+          endTime: moment(props.date).hour(7).minute(30),
+          calendar: '01'
+        }
+      ]
+    })
 
+    return {
+      state
+    }
   }
 }
 </script>

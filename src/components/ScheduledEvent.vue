@@ -1,14 +1,43 @@
 <template>
-  <div class='event'>
-   </div>
+  <div 
+		class='event'
+		:style='state.eventStyle'
+	>
+		{{ scheduledEvent.name }}
+  </div>
 </template>
 
 <script>
+import { reactive, computed } from 'vue'
 import moment from 'moment'
-export default {
-	setup () {
-    return {
 
+const convertTimeToPixels = (t) => {
+	return (t.hour() + t.minute() / 60) * 50
+}
+
+export default {
+	props: {
+		scheduledEvent: Object
+	},
+	setup (props) {
+		const state = reactive({
+			bgColor: computed(() => '#55efc4'),
+			duration: computed(() => {
+				const startTime = props.scheduledEvent.startTime
+				const endTime = props.scheduledEvent.endTime
+				return endTime.diff(startTime, 'hour') + (endTime.diff(startTime, 'minute') % 60) / 60
+			}),
+			eventStyle: computed(() => {
+				return {
+					'background-color': state.bgColor,
+					'height': state.duration * 50 + 'px',
+					'top': convertTimeToPixels(props.scheduledEvent.startTime) + 'px'
+				}
+			})
+		})
+
+    return {
+			state
     }
 	}
 }
@@ -73,3 +102,4 @@ h3 {
 	font-size: 0.75em;
 	margin-top: 5px;
 }
+</style>
