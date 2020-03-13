@@ -1,4 +1,5 @@
 import { uuid } from './utils'
+import moment from 'moment'
 
 export default {
   calendars: [
@@ -27,15 +28,15 @@ export default {
     {
       id: uuid(),
       name: 'Design Lecture',
-      startTime: 'Mon Mar 09 2020 06:35:52 GMT-0500',
-      endTime: 'Mon Mar 09 2020 10:05:52 GMT-0500',
+      startTime: moment('Mon Mar 09 2020 06:35:52 GMT-0500'),
+      endTime: moment('Mon Mar 09 2020 10:05:52 GMT-0500'),
       calendar: '01'
     },
     {
       id: uuid(),
       name: 'Homework',
-      startTime: 'Wed Mar 11 2020 12:00 GMT-0500',
-      endTime: 'Wed Mar 11 2020 14:20 GMT-0500',
+      startTime: moment('Wed Mar 11 2020 12:00 GMT-0500'),
+      endTime: moment('Wed Mar 11 2020 14:20 GMT-0500'),
       calendar: '01'
     }
   ]
