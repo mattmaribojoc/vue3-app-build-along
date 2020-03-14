@@ -4,6 +4,10 @@
     @close='closePopup'
     :existing-event='state.existingEvent'
   />
+  <edit-calendars
+    v-if='state.editCalendarsOpen'
+    @close='closePopup'
+  />
   <div id='planner-header'>
     <div id='planner-title'>
       <h2> {{ state.startOfWeek.format('MMMM') }} </h2>
@@ -49,6 +53,9 @@ import { ref, reactive, onUnmounted } from 'vue'
 import moment from 'moment'
 import DayDisplay from '../components/DayDisplay.vue'
 import AddEvent from '../components/forms/AddEvent.vue'
+import EditCalendars from '../components/forms/EditCalendars.vue'
+
+
 const useCurrentDate = () => {
   const currentDate = ref(moment())
 
@@ -70,13 +77,15 @@ const useCurrentDate = () => {
 export default {
   components: {
     DayDisplay,
-    AddEvent
+    AddEvent,
+    EditCalendars
   },
   setup () {
     const { currentDate } = useCurrentDate() 
 
     const state = reactive({
       addEventOpen: false,
+      editCalendarsOpen: true,
       existingEvent: null,
       startOfWeek: moment().day('Sunday')
     })
