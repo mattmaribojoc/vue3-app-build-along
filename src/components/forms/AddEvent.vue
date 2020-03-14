@@ -6,7 +6,6 @@
         <span @click='close'> x </span>
       </div>
       <div class='popup-content'>
-        {{ eventData.startTime }}
         <label> Calendar </label>
         <div 
           v-for='cal in state.calendars'
@@ -25,14 +24,17 @@
         <input type='time' 
           @change='changeTime("startTime", $event)'
           @blur='updateTimeDisplay("startTime", $event)'
+          id='add-event__start-time'
         />
         <label> End Time </label>
         <input type='time' 
           @change='changeTime("endTime", $event)'
           @blur='updateTimeDisplay("endTime", $event)'
+          id='add-event__end-time'
         />
       </div>
       <div class='popup-footer'>
+        <p class='popup-error'> {{ formError }} </p>
         <div class='popup-footer__cancel' @click='close'> Cancel </div>
         <div class='popup-footer__confirm' @click='submit'> Confirm </div>
       </div>
@@ -41,7 +43,7 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import moment from 'moment'
 import { usePopupLogic } from '../../logic/popup-logic'
 import { store } from '../../store'
@@ -54,11 +56,18 @@ export default {
 
     const { close } = usePopupLogic('addEvent', context.emit)
 
+    const formError = ref(null)
+    
     const eventData = reactive({
       calendar: '01',
       name: '',
       startTime: moment(),
       endTime: moment()
+    })
+
+    onMounted(() => {
+      document.getElementById('add-event__start-time').value = eventData.startTime.format('HH:mm')
+      document.getElementById('add-event__end-time').value = eventData.endTime.format('HH:mm')
     })
 
     const calendarStyle = (cal) => {
@@ -97,12 +106,32 @@ export default {
 
     const submit = () => {
       // verify form
+      if (eventData.name.trim().length === 0) {
+        formError.value = 'Name cannot be empty'
+        return
+      }
+
+      if (eventData.startTime.isAfter(eventData.endTime)) {
+        formError.value = 'Event must start before it begins'
+        return
+      }
+      
+      formError.value = null
 
       // submit form 
+      eventData.startTime.second(0)
+      eventData.endTime.second(0)
 
-      // if success, close modal 
-
-      // otherwise, print erros
+      if (store.addEvent({
+        ...eventData
+      })) {
+        // clear our event
+        close()
+        
+      } else {
+        formError.value = 'There is already an event during that time.'
+      }
+     
     }
 
     return {
@@ -110,6 +139,7 @@ export default {
       changeTime,
       close,
       eventData,
+      formError,
       state: store.getState(),
       submit,
       updateDate,
