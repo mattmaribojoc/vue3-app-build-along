@@ -19,7 +19,10 @@
         <label> Name </label>
         <input type='text' v-model='eventData.name' />
         <label> Date </label>
-        <date-picker @update='updateDate'/>
+        <date-picker 
+          @update='updateDate'
+          :default-date='defaultDate'
+        />
         <label> Start Time </label>
         <input type='time' 
           @change='changeTime("startTime", $event)'
@@ -52,11 +55,15 @@ export default {
   components: {
     DatePicker
   },
+  props: {
+    existingEvent: Object
+  },
   setup (props, context) {
 
     const { close } = usePopupLogic('addEvent', context.emit)
 
     const formError = ref(null)
+    const defaultDate = ref(null)
     
     const eventData = reactive({
       calendar: '01',
@@ -64,6 +71,15 @@ export default {
       startTime: moment(),
       endTime: moment()
     })
+
+    if (props.existingEvent) {
+      eventData.calendar = props.existingEvent.calendar
+      eventData.name = props.existingEvent.name
+      eventData.startTime = props.existingEvent.startTime
+      eventData.endTime = props.existingEvent.endTime
+
+      defaultDate.value = props.existingEvent.startTime.clone()
+    }
 
     onMounted(() => {
       document.getElementById('add-event__start-time').value = eventData.startTime.format('HH:mm')
@@ -122,22 +138,33 @@ export default {
       eventData.startTime.second(0)
       eventData.endTime.second(0)
 
-      if (store.addEvent({
-        ...eventData
-      })) {
-        // clear our event
-        close()
-        
+      if (props.existingEvent) {
+        let editEvent = { ...eventData }
+        editEvent.id = props.existingEvent.id
+
+        if (store.editEvent(editEvent)) {
+          close()
+        } else {
+          formError.value = 'There is already an event during that time.'
+        }
       } else {
-        formError.value = 'There is already an event during that time.'
-      }
-     
+        if (store.addEvent({
+          ...eventData
+        })) {
+          // clear our event
+          close()
+          
+        } else {
+          formError.value = 'There is already an event during that time.'
+        }
+      }     
     }
 
     return {
       calendarStyle,
       changeTime,
       close,
+      defaultDate,
       eventData,
       formError,
       state: store.getState(),

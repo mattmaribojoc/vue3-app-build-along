@@ -2,6 +2,7 @@
   <add-event 
     v-if='state.addEventOpen'
     @close='closePopup'
+    :existing-event='state.existingEvent'
   />
   <div id='planner-header'>
     <div id='planner-title'>
@@ -36,7 +37,9 @@
       <day-display 
         v-for='i in 7' 
         :key='i' 
-        :date="state.startOfWeek.clone().add(i - 1, 'days')" />
+        :date="state.startOfWeek.clone().add(i - 1, 'days')" 
+        @editEvent='openEditEvent'
+      />
     </div>
   </div>
 </template>
@@ -73,7 +76,8 @@ export default {
     const { currentDate } = useCurrentDate() 
 
     const state = reactive({
-      addEventOpen: true,
+      addEventOpen: false,
+      existingEvent: null,
       startOfWeek: moment().day('Sunday')
     })
 
@@ -89,12 +93,18 @@ export default {
     const closePopup = (evt) => {
       state[evt.name + 'Open'] = false
     }
+
+    const openEditEvent = (e) => {
+      state.addEventOpen = true
+      state.existingEvent = e
+    }
     
     return {
       changeWeek,
       closePopup,
       currentDate,
       moment,
+      openEditEvent,
       state
     }
     

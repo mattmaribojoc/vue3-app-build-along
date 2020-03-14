@@ -7,6 +7,7 @@
       @dragover.prevent
       @dragenter.prevent
       @drop='dropEvent'
+      v-bind='$attrs'
     />
     <div 
       class='hour'

@@ -35,6 +35,9 @@ import { ref, onMounted } from 'vue'
 import moment from 'moment'
 
 export default {
+  props: {
+    defaultDate: Object
+  },
   setup (props, { emit }) {
     const month = ref(null)
     const date = ref(null)
@@ -43,6 +46,10 @@ export default {
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     
     var dateValue = moment()
+    
+    if (props.defaultDate) {
+      dateValue = props.defaultDate
+    }
     const daysInMonth = ref(dateValue.daysInMonth())
 
     const updateDisplay = () => {
