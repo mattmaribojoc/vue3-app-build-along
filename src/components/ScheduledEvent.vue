@@ -4,6 +4,7 @@
 		:style='state.eventStyle'
 		draggable
 		@dragstart='startDrag'
+		@mousedown='mouseDown'
 	>
 		<h2> {{ scheduledEvent.name }} </h2>
 		<h3> {{ scheduledEvent.startTime.format('h:mma') }}-{{ scheduledEvent.endTime.format('h:mma') }} </h3>
@@ -15,7 +16,7 @@ import { reactive, computed } from 'vue'
 import moment from 'moment'
 import { store } from '../store'
 import { useDragAndDrop } from '../logic/drag-and-drop.js'
-
+import { useResizeEvents } from '../logic/resize-events'
 const convertTimeToPixels = (t) => {
 	return (t.hour() + t.minute() / 60) * 50
 }
@@ -27,7 +28,7 @@ export default {
 	setup (props) {
 
 		const { startDrag } = useDragAndDrop(props)
-		
+		const { mouseDown } = useResizeEvents(props)
 		const state = reactive({
 			bgColor: computed(() => {
 				let calendars = store.getState().calendars
@@ -46,10 +47,8 @@ export default {
 				}
 			})
 		})
-
-		
-
     return {
+			mouseDown,
 			startDrag,
 			state
     }

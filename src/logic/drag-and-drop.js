@@ -3,6 +3,10 @@ import { store } from '../store'
 
 export function useDragAndDrop (props) {
   const startDrag = (evt) => {
+    if (evt.offsetY <= 15 || evt.target.offsetHeight - evt.offsetY <= 15) {
+      evt.preventDefault()
+      return
+    }
     evt.dataTransfer.effectAllowed = 'move'
     evt.dataTransfer.dropEffect = 'move'
     evt.dataTransfer.setData('event', JSON.stringify(props.scheduledEvent))
