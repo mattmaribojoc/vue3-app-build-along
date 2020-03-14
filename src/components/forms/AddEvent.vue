@@ -2,7 +2,8 @@
   <div class='popup-bg'>
     <div class='popup'>
       <div class='popup-header'>
-        
+        <h2> Add Event </h2>
+        <span @click='close'> x </span>
       </div>
       <div class='popup-content'>
         
@@ -16,10 +17,14 @@
 
 <script>
 import moment from 'moment'
+import { usePopupLogic } from '../../logic/popup-logic'
 export default {
-  setup () {
+  setup (props, context) {
+
+    const { close } = usePopupLogic('addEvent', context.emit)
+
     return {
-      
+      close
     }
   }
 }
