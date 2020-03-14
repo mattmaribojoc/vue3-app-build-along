@@ -6,6 +6,7 @@
         <span @click='close'> x </span>
       </div>
       <div class='popup-content'>
+        {{ eventData.startTime }}
         <label> Calendar </label>
         <div 
           v-for='cal in state.calendars'
@@ -19,6 +20,7 @@
         <label> Name </label>
         <input type='text' v-model='eventData.name' />
         <label> Date </label>
+        <date-picker @update='updateDate'/>
         <label> Start Time </label>
         <input type='time' 
           @change='changeTime("startTime", $event)'
@@ -43,8 +45,11 @@ import { reactive } from 'vue'
 import moment from 'moment'
 import { usePopupLogic } from '../../logic/popup-logic'
 import { store } from '../../store'
-
+import DatePicker from './DatePicker.vue'
 export default {
+  components: {
+    DatePicker
+  },
   setup (props, context) {
 
     const { close } = usePopupLogic('addEvent', context.emit)
@@ -52,7 +57,6 @@ export default {
     const eventData = reactive({
       calendar: '01',
       name: '',
-      date: moment(),
       startTime: moment(),
       endTime: moment()
     })
@@ -73,6 +77,18 @@ export default {
 
       eventData[property] = eventData[property].clone().hour(hour).minute(minutes)
 
+    }
+
+    const updateDate = (date) => {
+      eventData.startTime = date.clone().set({
+        'hour': eventData.startTime.hour(),
+        'minute': eventData.startTime.minute()
+      })
+
+      eventData.endTime = date.clone().set({
+        'hour': eventData.endTime.hour(),
+        'minute': eventData.endTime.minute()
+      })
     }
 
     const updateTimeDisplay = (property, evt) => {
@@ -96,6 +112,7 @@ export default {
       eventData,
       state: store.getState(),
       submit,
+      updateDate,
       updateTimeDisplay
     }
   }
