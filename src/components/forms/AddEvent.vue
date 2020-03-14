@@ -2,7 +2,8 @@
   <div class='popup-bg'>
     <div class='popup'>
       <div class='popup-header'>
-        <h2> Add Event </h2>
+        <h2 v-if='existingEvent'> Edit Event </h2>
+        <h2 v-else> Add Event </h2>
         <span @click='close'> x </span>
       </div>
       <div class='popup-content'>
@@ -40,6 +41,7 @@
         <p class='popup-error'> {{ formError }} </p>
         <div class='popup-footer__cancel' @click='close'> Cancel </div>
         <div class='popup-footer__confirm' @click='submit'> Confirm </div>
+        <div class='popup-footer__delete' @click='deleteEvent'> Delete </div>
       </div>
     </div>
   </div>
@@ -160,11 +162,17 @@ export default {
       }     
     }
 
+    const deleteEvent = () => {
+      store.deleteEvent(props.existingEvent.id)
+      close()
+    }
+
     return {
       calendarStyle,
       changeTime,
       close,
       defaultDate,
+      deleteEvent,
       eventData,
       formError,
       state: store.getState(),
