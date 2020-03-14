@@ -91,7 +91,7 @@ class PlannerStore extends Store {
     if (calendarData.name.trim().length === 0) {
       cal.name = 'Untitled'
     } else {
-      cal.nane = calendarData.name
+      cal.name = calendarData.name
     }
 
     return true
