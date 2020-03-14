@@ -81,21 +81,20 @@ class PlannerStore extends Store {
     })
   }
 
-  editCalendars (calendar) {
-    let cal = this.state.calendars.find(c => c.id === calendar.id)
+  editCalendar (calendarData) {
+    let cal = this.state.calendars.find(c => c.id === calendarData.id)
 
     if (!cal) {
       return false
     }
 
-    if (calendar.name.trim().length === 0) {
+    if (calendarData.name.trim().length === 0) {
       cal.name = 'Untitled'
     } else {
-      cal.name = calendar.name
+      cal.nane = calendarData.name
     }
 
     return true
-      
   }
 }
 export const store = new PlannerStore();
