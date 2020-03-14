@@ -13,6 +13,7 @@
       <h2> {{ state.startOfWeek.format('MMMM') }} </h2>
       <span> {{ state.startOfWeek.format('YYYY') }} </span>
       <div class='add-event' @click='state.addEventOpen = true'> Add Event </div>
+      <div class='edit-calendars' @click='state.editCalendarsOpen = true'> Edit Calendars </div>
     </div>
     <div id='planner-days'>
       <div id='planner-nav'>

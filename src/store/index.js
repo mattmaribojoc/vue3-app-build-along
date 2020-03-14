@@ -81,9 +81,9 @@ class PlannerStore extends Store {
     })
   }
 
-  editCalender (calendarData) {
+  editCalendar (calendarData) {
     let cal = this.state.calendars.find(c => c.id === calendarData.id)
-    
+
     if (!cal) {
       return false
     }
@@ -93,6 +93,8 @@ class PlannerStore extends Store {
     } else {
       cal.name = calendarData.name
     }
+
+    return true
   }
 }
 export const store = new PlannerStore();

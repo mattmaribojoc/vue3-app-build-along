@@ -11,11 +11,12 @@
           v-for='cal in calendars'
           :key='cal.id'
         >
-          <div class='calendar-swatch' :style='{"background-color": cal.color}' />
-          <input type='text' 
-            v-model='cal.name' 
-            placeholder='Enter a name'
-            @input='editCalendar(cal, $event)'
+          <div class='calendar-swatch' :style='{"background-color": cal.color}'/>
+          <input 
+            type='text'
+            v-model='cal.name'
+            @change='editCalendar(cal, $event)'
+            placeholder='Untitled'
           />
         </div>
       </div>
@@ -26,11 +27,10 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
 import { usePopupLogic } from '../../logic/popup-logic'
 
-import { ref, onMounted } from 'vue'
-import { store } from '../../store/'
-
+import { store } from '../../store'
 export default {
   setup (props, { emit }) {
     
@@ -44,11 +44,12 @@ export default {
 
     const editCalendar = (cal, evt) => {
       cal.name = evt.target.value
-      store.editCalender
+      store.editCalendar(cal)
     }
     return {
       calendars,
-      close
+      close,
+      editCalendar
     }
   }
 }
