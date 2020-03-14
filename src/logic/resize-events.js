@@ -16,19 +16,23 @@ export function useResizeEvents (props) {
     
     let newTime = props.scheduledEvent.startTime.clone().hour(hour).minute(minutes)
 
-    let newEvent = {...props.scheduledEvent}
+    if (newTime.isSame(props.scheduledEvent.startTime, 'day') || 
+      newTime.clone().subtract(1, 'minute').isSame(props.scheduledEvent.startTime, 'day')) {
 
-    if (timeEdited === 'startTime' && moment(newTime).isAfter(newEvent.endTime)) {
-      timeEdited = 'endTime'
-      newEvent.startTime = newEvent.endTime
-    } else if (timeEdited === 'endTime' && moment(newTime).isBefore(newEvent.startTime)) {
-      timeEdited = 'startTime'
-      newEvent.endTime = newEvent.startTime
+      let newEvent = {...props.scheduledEvent}
+
+      if (timeEdited === 'startTime' && moment(newTime).isAfter(newEvent.endTime)) {
+        timeEdited = 'endTime'
+        newEvent.startTime = newEvent.endTime
+      } else if (timeEdited === 'endTime' && moment(newTime).isBefore(newEvent.startTime)) {
+        timeEdited = 'startTime'
+        newEvent.endTime = newEvent.startTime
+      }
+      
+      newEvent[timeEdited] = newTime
+
+      store.editEvent(newEvent)
     }
-    
-    newEvent[timeEdited] = newTime
-
-    store.editEvent(newEvent)
   }
 
   const mouseDown = (evt) => {
