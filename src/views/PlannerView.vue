@@ -1,13 +1,17 @@
 <template>
-  <add-event 
-    v-if='state.addEventOpen'
-    @close='closePopup'
-    :existing-event='state.existingEvent'
-  />
-  <edit-calendars
-    v-if='state.editCalendarsOpen'
-    @close='closePopup'
-  />
+  <transition name='fade'>
+    <add-event 
+      v-if='state.addEventOpen'
+      @close='closePopup'
+      :existing-event='state.existingEvent'
+    />
+  </transition>
+  <transition name='fade'>
+    <edit-calendars
+      v-if='state.editCalendarsOpen'
+      @close='closePopup'
+    />
+  </transition>
   <div id='planner-header'>
     <div id='planner-title'>
       <h2> {{ state.startOfWeek.format('MMMM') }} </h2>
@@ -86,7 +90,7 @@ export default {
 
     const state = reactive({
       addEventOpen: false,
-      editCalendarsOpen: true,
+      editCalendarsOpen: false,
       existingEvent: null,
       startOfWeek: moment().day('Sunday')
     })
@@ -102,6 +106,7 @@ export default {
 
     const closePopup = (evt) => {
       state[evt.name + 'Open'] = false
+      state.existingEvent = null
     }
 
     const openEditEvent = (e) => {
