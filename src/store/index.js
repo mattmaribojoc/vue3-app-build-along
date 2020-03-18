@@ -52,14 +52,21 @@ class PlannerStore extends Store {
     if (!e) {
       return false
     }
-
-    if (this.isTimeAvailable(newEvent.id, newEvent.startTime, newEvent.endTime).available) {
+    
+    var isTimeAvailable = this.isTimeAvailable(newEvent.id, newEvent.startTime, newEvent.endTime)
+    if (isTimeAvailable.available) {
       e.name = newEvent.name
       e.calendar = newEvent.calendar
       e.startTime = newEvent.startTime
       e.endTime = newEvent.endTime
       return true
     }
+    e.shake = true
+    isTimeAvailable.overlap.shake = true
+    setTimeout(() => {
+      e.shake = false
+      isTimeAvailable.overlap.shake = false
+    }, 500)
     return false
 
   }

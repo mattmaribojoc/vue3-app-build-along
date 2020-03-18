@@ -1,6 +1,7 @@
 <template>
   <div 
 		class='event'
+		:class='{"event-shake": scheduledEvent.shake}'
 		:style='state.eventStyle'
 		draggable
 		@dragstart='startDrag'
