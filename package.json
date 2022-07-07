@@ -5,7 +5,7 @@
     "build": "webpack --env.prod"
   },
   "dependencies": {
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "moment-range": "^4.0.2",
     "v-calendar": "^1.0.0-beta.23",
     "vue": "^3.0.0-alpha.4"
